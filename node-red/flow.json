@@ -1,0 +1,140 @@
+[
+    {
+        "id": "160d105c.c754a",
+        "type": "tab",
+        "label": "Smart Shelf"
+    },
+    {
+        "id": "f6204968.3945f8",
+        "type": "serial in",
+        "z": "160d105c.c754a",
+        "name": "OpenScale",
+        "serial": "982ef169.26e84",
+        "x": 126.5,
+        "y": 91,
+        "wires": [
+            [
+                "e7bcab9f.4ad8f8",
+                "11d94fa5.4b99e"
+            ]
+        ]
+    },
+    {
+        "id": "e7bcab9f.4ad8f8",
+        "type": "function",
+        "z": "160d105c.c754a",
+        "name": "Parse input",
+        "func": "// Read input from open scale\nvar payload = msg.split(',');\n\n// Get the weight\nvar weight = payload[0];\n\n// Calculate quantity (pop cans are about 355 grams)\nvar quantity = weight / 0.355;\n\n// Expose quantity globally\nglobal.set('quantity', qauntity)\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 326.5,
+        "y": 91,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "11d94fa5.4b99e",
+        "type": "trigger",
+        "z": "160d105c.c754a",
+        "op1": "1",
+        "op2": ".",
+        "op1type": "str",
+        "op2type": "str",
+        "duration": "10",
+        "extend": false,
+        "units": "s",
+        "reset": "",
+        "name": "Delay 10s and trigger read",
+        "x": 377.5,
+        "y": 152,
+        "wires": [
+            [
+                "acfabcfd.08679"
+            ]
+        ]
+    },
+    {
+        "id": "acfabcfd.08679",
+        "type": "serial out",
+        "z": "160d105c.c754a",
+        "name": "OpenScale",
+        "serial": "982ef169.26e84",
+        "x": 597.5,
+        "y": 152,
+        "wires": []
+    },
+    {
+        "id": "b135faaf.567c28",
+        "type": "http in",
+        "z": "160d105c.c754a",
+        "name": "Get /shelf",
+        "url": "/shelf",
+        "method": "get",
+        "swaggerDoc": "",
+        "x": 130.5,
+        "y": 232,
+        "wires": [
+            [
+                "840b1b62.022988"
+            ]
+        ]
+    },
+    {
+        "id": "a4394dba.3edc8",
+        "type": "template",
+        "z": "160d105c.c754a",
+        "name": "Create webpage",
+        "field": "payload",
+        "fieldType": "msg",
+        "format": "handlebars",
+        "syntax": "mustache",
+        "template": "Total products: {{payload}} !",
+        "x": 471.5,
+        "y": 231,
+        "wires": [
+            [
+                "992fb0b0.1becd"
+            ]
+        ]
+    },
+    {
+        "id": "840b1b62.022988",
+        "type": "function",
+        "z": "160d105c.c754a",
+        "name": "Expose data",
+        "func": "// Expose quantity in message payload\nmsg.payload = global.get('quantity');\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 294.5,
+        "y": 231,
+        "wires": [
+            [
+                "a4394dba.3edc8"
+            ]
+        ]
+    },
+    {
+        "id": "992fb0b0.1becd",
+        "type": "http response",
+        "z": "160d105c.c754a",
+        "name": "Deliver web page to user",
+        "x": 712.5,
+        "y": 230,
+        "wires": []
+    },
+    {
+        "id": "982ef169.26e84",
+        "type": "serial-port",
+        "z": "",
+        "serialport": "/dev/ttyUSB0",
+        "serialbaud": "9600",
+        "databits": "8",
+        "parity": "none",
+        "stopbits": "1",
+        "newline": "\\n",
+        "bin": "false",
+        "out": "char",
+        "addchar": false
+    }
+]
