@@ -28,7 +28,7 @@ The Raspberry Pi uses Node-RED to translate the weight readings from the OpenSca
 
 2. Wire your load sensors to the combinator following the schematic below. The load sensors connect to the load sensor combinator on the OpenScale microcontroller which will take the four inputs and provide a single output.
   
-  ![Final Design Schematic](/images/Final Design Schematic.png)
+  ![Final Design Schematic](/images/Final&#32;Design&#32;Schematic.png)
 
   * If you're having trouble getting the combinator to work, like myself, you can try to create a [wheatstone bridge](https://en.wikipedia.org/wiki/Wheatstone_bridge) configuration. Refer to [this schematic](https://cdn.sparkfun.com/datasheets/Sensors/ForceFlex/openScale_v04.pdf) on the OpenScale. Look at the wiring for the combiner in the bottom right and replicate it in your wiring for the load sensors. Connect the four-wire output from the load sensors to the four-wire load cell input on the OpenScale.
 
